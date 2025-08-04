@@ -1,0 +1,83 @@
+{% extends "base.html" %}
+
+{% block title %}仪表板 - 用户登录系统{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-10">
+        <div class="card">
+            <div class="card-body p-5">
+                <h2 class="text-center mb-4">欢迎回来，{{ user.username }}！</h2>
+
+                <div class="row mb-4">
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">用户信息</h5>
+                                <p><strong>用户名：</strong>{{ user.username }}</p>
+                                <p><strong>邮箱：</strong>{{ user.email }}</p>
+                                <p><strong>注册时间：</strong>{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                {% if user.last_login %}
+                                <p><strong>最后登录：</strong>{{ user.last_login.strftime('%Y-%m-%d %H:%M:%S') }}</p>
+                                {% endif %}
+                                <p><strong>账户状态：</strong><span class="badge bg-success">活跃</span></p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-md-6">
+                        <div class="card bg-light">
+                            <div class="card-body">
+                                <h5 class="card-title">统计信息</h5>
+                                <p><strong>总登录次数：</strong>{{ user.login_logs|length }}</p>
+                                <p><strong>当前会话：</strong><span class="text-success">活跃</span></p>
+                                <p><strong>账户年龄：</strong>{{ ((now - user.created_at).days) }} 天</p>
+                                <p><strong>最后活动：</strong>{{ user.last_login.strftime('%Y-%m-%d %H:%M:%S') if
+                                    user.last_login else '首次登录' }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title">快速操作</h5>
+                                <div class="row">
+                                    <div class="col-md-3 mb-2">
+                                        <a href="{{ url_for('profile') }}" class="btn btn-outline-primary w-100">
+                                            <i class="bi bi-person"></i> 查看个人资料
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <a href="{{ url_for('profile') }}" class="btn btn-outline-info w-100">
+                                            <i class="bi bi-clock-history"></i> 登录历史
+                                        </a>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <button class="btn btn-outline-warning w-100" onclick="refreshPage()">
+                                            <i class="bi bi-arrow-clockwise"></i> 刷新页面
+                                        </button>
+                                    </div>
+                                    <div class="col-md-3 mb-2">
+                                        <a href="{{ url_for('logout') }}" class="btn btn-outline-danger w-100">
+                                            <i class="bi bi-box-arrow-right"></i> 登出
+                                        </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function refreshPage() {
+        location.reload();
+    }
+</script>
+{% endblock %}
